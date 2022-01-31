@@ -119,6 +119,95 @@ public class HotelTest {
 		assertEquals(1, hotel.getCategory());
 	}
 	
+	@Test
+	@DisplayName("Test propiedad igualdad reflexiva con objetos iguales")
+	void testEquals_reflexive() {
+		Hotel hotelA = new Hotel();
+		hotelA.setId(1);
+		hotelA.setName("Hotel A");
+		hotelA.setCategory(1);
+		
+		assertEquals(hotelA, hotelA);
+		assertEquals(hotelA.hashCode(), hotelA.hashCode());
+	}
 	
+	@Test
+	@DisplayName("Test propiedad igualdad simétrica con objetos iguales")
+	void testEquals_symetric() {
+		Hotel hotelA = new Hotel();
+		hotelA.setId(1);
+		hotelA.setName("Hotel A");
+		hotelA.setCategory(1);
+		
+		Hotel hotelB = new Hotel();
+		hotelB.setId(1);
+		hotelB.setName("Hotel A");
+		hotelB.setCategory(1);
+		
+		assertEquals(hotelA, hotelB);
+		assertEquals(hotelB, hotelA);
+		assertEquals(hotelA.hashCode(), hotelB.hashCode());
+	}
+	
+	@Test
+	@DisplayName("Test propiedad transitiva reflexiva con objetos iguales")
+	void testEquals_transitive() {
+		Hotel hotelA = new Hotel();
+		hotelA.setId(1);
+		hotelA.setName("Hotel A");
+		hotelA.setCategory(1);
+		
+		Hotel hotelB = new Hotel();
+		hotelB.setId(1);
+		hotelB.setName("Hotel A");
+		hotelB.setCategory(1);
+
+		Hotel hotelC = new Hotel();
+		hotelC.setId(1);
+		hotelC.setName("Hotel A");
+		hotelC.setCategory(1);
+		
+		assertEquals(hotelA, hotelB);
+		assertEquals(hotelB, hotelC);
+		assertEquals(hotelA, hotelC);
+		assertEquals(hotelA.hashCode(), hotelB.hashCode());
+		assertEquals(hotelB.hashCode(), hotelC.hashCode());
+		assertEquals(hotelA.hashCode(), hotelC.hashCode());
+	}
+	
+	@Test
+	@DisplayName("Test propiedad igualdad nulidad con objetos iguales")
+	void testEquals_nullability() {
+		Hotel hotelA = new Hotel();
+		hotelA.setId(1);
+		hotelA.setName("Hotel A");
+		hotelA.setCategory(1);
+		
+		assertNotEquals(hotelA, null);
+		assertNotEquals(null, hotelA);
+		
+		Hotel nullHotel = new Hotel();
+		assertNotEquals(hotelA, nullHotel);
+	}
+	
+	@Test
+	@DisplayName("Test propiedad igualdad simétrica con objetos distintos")
+	void testNotEquals_symetric() {
+		Hotel hotelA = new Hotel();
+		hotelA.setId(1);
+		hotelA.setName("Hotel A");
+		hotelA.setCategory(1);
+		
+		Hotel hotelB = new Hotel();
+		hotelB.setId(2);
+		hotelB.setName("Hotel B");
+		hotelB.setCategory(1);
+		
+		assertNotEquals(hotelA, hotelB);
+		assertNotEquals(hotelB, hotelA);
+		assertNotEquals(hotelA, new Object());
+		assertNotEquals(hotelB, new Object());
+		assertNotEquals(hotelA.hashCode(), hotelB.hashCode());
+	}
 
 }
