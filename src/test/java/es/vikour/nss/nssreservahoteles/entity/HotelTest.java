@@ -32,19 +32,6 @@ public class HotelTest {
 	}
 	
 	@Test
-	@DisplayName("Cuando el Id es un valor nulo, entonces error")
-	void testId_whenNull_thenError() {
-		Hotel hotel = new Hotel();
-		hotel.setId(null);
-		hotel.setName("Hotel");
-		hotel.setCategory(1);
-		Set<ConstraintViolation<Hotel>> validate = validator.validate(hotel);
-		assertFalse(validate.isEmpty());
-		assertEquals(1, validate.size());
-		assertExistsValidationMessage(validate, EntityValidationConstants.ERROR_HOTEL_ID_NULO);
-	}
-	
-	@Test
 	@DisplayName("Cuando el Id es un valor entero, entonces correcto")
 	void testId_whenAnInteger_thenCorrect() {
 		Hotel hotel = new Hotel();

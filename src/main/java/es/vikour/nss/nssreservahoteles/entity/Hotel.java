@@ -23,7 +23,6 @@ import static es.vikour.nss.nssreservahoteles.entity.EntityValidationConstants.*
 public class Hotel {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@NotNull(message= ERROR_HOTEL_ID_NULO)
 	private Integer id;
 	
 	@NotEmpty(message = ERROR_HOTEL_NAME)
