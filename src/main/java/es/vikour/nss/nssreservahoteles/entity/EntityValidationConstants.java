@@ -10,6 +10,7 @@ class EntityValidationConstants {
 	
 	static final String ERROR_HOTEL_ID_NULO = "El id del hotel no debe de ser nulo";
 	static final String ERROR_HOTEL_NAME = "El nombre del hotel debe de estar relleno";
+	static final String ERROR_HOTEL_NAME_SIZE = "El nombre del hotel tiene más de 100 carácteres";
 	static final String ERROR_HOTEL_CATEGORY = "La categoría del hotel no debe de ser nula";
 
 }

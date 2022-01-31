@@ -95,6 +95,32 @@ public class HotelTest {
 	}
 	
 	@Test
+	@DisplayName("Cuando el nombre tiene una longitud mayor que 100, entonces error")
+	void testId_whenNameLengthGreaterThan100_thenError() {
+		Hotel hotel = new Hotel();
+		hotel.setName("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901");
+		hotel.setId(1);
+		hotel.setCategory(1);
+		Set<ConstraintViolation<Hotel>> validate = validator.validate(hotel);
+		assertFalse(validate.isEmpty());
+		assertEquals(1, validate.size());
+		assertExistsValidationMessage(validate, EntityValidationConstants.ERROR_HOTEL_NAME_SIZE);
+	}
+	
+	@Test
+	@DisplayName("Cuando el nombre tiene una longitud igual que 100, entonces correcto")
+	void testId_whenNameLengthEqualsThan100_thenCorrect() {
+		Hotel hotel = new Hotel();
+		String string100caracters = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
+		hotel.setName(string100caracters);
+		hotel.setId(1);
+		hotel.setCategory(1);
+		Set<ConstraintViolation<Hotel>> validate = validator.validate(hotel);
+		assertTrue(validate.isEmpty());
+		assertEquals(string100caracters, hotel.getName());
+	}
+	
+	@Test
 	@DisplayName("Cuando la categoría es nula, entonces error")
 	void testCategory_whenNull_thenError() {
 		Hotel hotel = new Hotel();
@@ -117,6 +143,7 @@ public class HotelTest {
 		Set<ConstraintViolation<Hotel>> validate = validator.validate(hotel);
 		assertTrue(validate.isEmpty());
 		assertEquals(1, hotel.getCategory());
+		System.out.println(validate);
 	}
 	
 	@Test
