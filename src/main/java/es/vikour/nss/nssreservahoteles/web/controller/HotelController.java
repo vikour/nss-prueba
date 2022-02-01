@@ -14,9 +14,14 @@ import es.vikour.nss.nssreservahoteles.service.HotelService;
 import es.vikour.nss.nssreservahoteles.web.converter.HotelToDtoConverter;
 import es.vikour.nss.nssreservahoteles.web.dto.HotelDto;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+/**
+ * API para obtener información acerca de los hoteles.
+ * 
+ * @author Víctor Manuel Ortiz Guardeño
+ */
 
 @RestController
 @RequestMapping("/hotels")
