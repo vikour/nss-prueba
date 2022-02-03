@@ -11,5 +11,9 @@ class EntityValidationConstants {
 	static final String ERROR_HOTEL_NAME = "El nombre del hotel debe de estar relleno";
 	static final String ERROR_HOTEL_NAME_SIZE = "El nombre del hotel tiene más de 100 carácteres";
 	static final String ERROR_HOTEL_CATEGORY = "La categoría del hotel no debe de ser nula";
+	static final String ERROR_HOTEL_MANDATORY = "El hotel es obligatorio";
+	static final String ERROR_DATE_MANDATORY = "La fecha es obligatoria";
+	static final String ERROR_ROOMS_MANDATORY = "El número de habitaciones es obligatorio";
+	static final String ERROR_ROOMS_GT_1 = "El número de habitaciones es como mínimo 1";
 
 }
