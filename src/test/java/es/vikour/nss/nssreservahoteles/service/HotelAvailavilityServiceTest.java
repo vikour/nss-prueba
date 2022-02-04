@@ -158,7 +158,7 @@ class HotelAvailavilityServiceTest {
 
 			// - Prueba con fechas en rango por debajo del devuelto por el repositorio
 			Arguments.of(twoAvailDB,
-					LocalDate.of(2022, 1, 31),LocalDate.of(2022, 2, 2), 2,
+					LocalDate.of(2022, 1, 31),LocalDate.of(2022, 2, 3), 2,
 					Lists.list(
 							new Availavility(LocalDate.of(2022, 1, 31),hotelSelected, 2),
 							new Availavility(LocalDate.of(2022, 2, 1),hotelSelected, 2)
@@ -178,7 +178,7 @@ class HotelAvailavilityServiceTest {
 					)),
 			// - Prueba con fechas en rango por encima del devuelto por la base de datos:
 			Arguments.of(twoAvailDB,
-					LocalDate.of(2022, 2, 3),LocalDate.of(2022, 2, 4), 2,
+					LocalDate.of(2022, 2, 2),LocalDate.of(2022, 2, 4), 2,
 					Lists.list(
 							new Availavility(LocalDate.of(2022, 2, 4),hotelSelected, 2)
 					)),
@@ -187,18 +187,11 @@ class HotelAvailavilityServiceTest {
 
 			// - Prueba con fechas en rango por debajo del devuelto por el repositorio
 			Arguments.of(availDbWithGap,
-					LocalDate.of(2022, 1, 31),LocalDate.of(2022, 2, 2), 2,
-					Lists.list(
-							new Availavility(LocalDate.of(2022, 1, 31),hotelSelected, 2),
-							new Availavility(LocalDate.of(2022, 2, 1),hotelSelected, 2)
-					)),
-			// - Prueba con fechas en rango bajo incluyendo el hueco.
-			Arguments.of(availDbWithGap,
-					LocalDate.of(2022, 1, 31),LocalDate.of(2022, 2, 3), 2,
+					LocalDate.of(2022, 1, 31),LocalDate.of(2022, 2, 4), 2,
 					Lists.list(
 							new Availavility(LocalDate.of(2022, 1, 31),hotelSelected, 2),
 							new Availavility(LocalDate.of(2022, 2, 1),hotelSelected, 2),
-							new Availavility(LocalDate.of(2022, 2, 3),hotelSelected, 2)
+							new Availavility(LocalDate.of(2022, 2, 3),hotelSelected, 2) // En el hueco
 					)),
 			
 			// - Prueba con fechas el mismo rango que el devuelto por el repositorio
@@ -216,15 +209,9 @@ class HotelAvailavilityServiceTest {
 					)),
 			// - Prueba con fechas en rango por encima del devuelto por la base de datos:
 			Arguments.of(availDbWithGap,
-					LocalDate.of(2022, 2, 4),LocalDate.of(2022, 2, 5), 2,
+					LocalDate.of(2022, 2, 2),LocalDate.of(2022, 2, 5), 2,
 					Lists.list(
-							new Availavility(LocalDate.of(2022, 2, 5),hotelSelected, 2)
-					)),
-			// - Prueba con fechas en rango por encima del devuelto por la base de datos (incluye el hueco)
-			Arguments.of(availDbWithGap,
-					LocalDate.of(2022, 2, 3),LocalDate.of(2022, 2, 5), 2,
-					Lists.list(
-							new Availavility(LocalDate.of(2022, 2, 3),hotelSelected, 2),
+							new Availavility(LocalDate.of(2022, 2, 3),hotelSelected, 2), // En el hueco
 							new Availavility(LocalDate.of(2022, 2, 5),hotelSelected, 2)
 					))
 		));
