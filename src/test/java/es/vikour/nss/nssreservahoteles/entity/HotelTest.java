@@ -1,13 +1,13 @@
 package es.vikour.nss.nssreservahoteles.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static es.vikour.nss.nssreservahoteles.support.AssertionUtilities.*;
 
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -20,15 +20,6 @@ public class HotelTest {
 	@BeforeAll
 	public static void setUp() {
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
-	}
-
-
-	private void assertExistsValidationMessage(Set<ConstraintViolation<Hotel>> validate, String message) {
-		boolean exists = validate.stream()
-			.anyMatch((v) -> v.getMessage().equals(message));
-		
-		if (!exists) 
-			fail(String.format("Expected message validation : \"%s\"", message));
 	}
 	
 	@Test
