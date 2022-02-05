@@ -18,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import es.vikour.nss.nssreservahoteles.entity.Hotel;
 import es.vikour.nss.nssreservahoteles.repository.AvailavilityRepository;
+import es.vikour.nss.nssreservahoteles.repository.BookingRepository;
 import es.vikour.nss.nssreservahoteles.repository.HotelRepository;
 import es.vikour.nss.nssreservahoteles.service.impl.HotelServiceImpl;
 
@@ -32,6 +33,9 @@ class HotelServiceTest {
 
 	@MockBean
 	private AvailavilityRepository availavilityRepository;
+	
+	@MockBean
+	private BookingRepository bookRepository;
 	
 	@TestConfiguration
 	public static class HotelServiceTestConfig {

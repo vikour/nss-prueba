@@ -30,7 +30,7 @@ public class Availavility {
 	@EmbeddedId
 	private AvailavilityPK availavilityPK;
 	
-	@Min(value = 1, message = ERROR_ROOMS_GT_1)
+	@Min(value = 0, message = ERROR_ROOMS_GT_1)
 	@NotNull(message = ERROR_ROOMS_MANDATORY)
 	private Integer rooms;
 	
