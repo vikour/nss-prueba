@@ -14,4 +14,9 @@ final class Constants {
 	
 	public static final String MSG_HOTEL_ID_OBLIGATORIO = "El id es obligatorio";
 
+
+	public static final String MSG_EMAIL_MANDATORY = "El email es obligatorio";
+	public static final String MSG_EMAIL_FORMAT = "El email no tienen un formato correcto";
+	public static final String MSG_EMAIL_SIZE = "El email no puede tener una longitud superior a 100 carácteres";
+
 }

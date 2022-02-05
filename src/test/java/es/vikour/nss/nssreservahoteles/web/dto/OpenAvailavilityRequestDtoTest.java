@@ -61,7 +61,7 @@ class OpenAvailavilityRequestDtoTest {
 		
 		Set<ConstraintViolation<OpenAvailavilityRequestDto>> validations = validator.validate(validRequest);
 		
-		assertExistsValidationMessage(validations, OpenAvailaivlityRequestConstants.MSG_NUMERO_HABITACIONES_OBLIGATORIO);
+		assertExistsValidationMessage(validations, MSG_NUMERO_HABITACIONES_OBLIGATORIO);
 	}
 
 
@@ -71,12 +71,12 @@ class OpenAvailavilityRequestDtoTest {
 		// Se prueba con 0
 		validRequest.setNumberRooms(0);
 		Set<ConstraintViolation<OpenAvailavilityRequestDto>> validations = validator.validate(validRequest);
-		assertExistsValidationMessage(validations, OpenAvailaivlityRequestConstants.MSG_NUMERO_HABITACIONES_MINIMO);
+		assertExistsValidationMessage(validations, MSG_NUMERO_HABITACIONES_MINIMO);
 		
 		// se prueba con -2
 		validRequest.setNumberRooms(-2);
 		validations = validator.validate(validRequest);
-		assertExistsValidationMessage(validations, OpenAvailaivlityRequestConstants.MSG_NUMERO_HABITACIONES_MINIMO);
+		assertExistsValidationMessage(validations, MSG_NUMERO_HABITACIONES_MINIMO);
 	}
 
 	@Test
@@ -84,7 +84,7 @@ class OpenAvailavilityRequestDtoTest {
 	public void testStartDate_whenNull_thenError() {
 		validRequest.setStartDate(null);
 		Set<ConstraintViolation<OpenAvailavilityRequestDto>> validations = validator.validate(validRequest);
-		assertExistsValidationMessage(validations, OpenAvailaivlityRequestConstants.MSG_FECHA_INICIO_OBLIGATORIA);
+		assertExistsValidationMessage(validations, MSG_FECHA_INICIO_OBLIGATORIA);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ class OpenAvailavilityRequestDtoTest {
 	public void testEndDate_whenNull_thenError() {
 		validRequest.setEndDate(null);
 		Set<ConstraintViolation<OpenAvailavilityRequestDto>> validations = validator.validate(validRequest);
-		assertExistsValidationMessage(validations, OpenAvailaivlityRequestConstants.MSG_FECHA_FIN_OBLIGATORIA);
+		assertExistsValidationMessage(validations, MSG_FECHA_FIN_OBLIGATORIA);
 	}
 
 	@Test
@@ -102,19 +102,19 @@ class OpenAvailavilityRequestDtoTest {
 		validRequest.setStartDate(LocalDate.of(2022, 5, 1));
 		validRequest.setEndDate(LocalDate.of(2022, 4, 1));
 		Set<ConstraintViolation<OpenAvailavilityRequestDto>> validations = validator.validate(validRequest);
-		assertExistsValidationMessage(validations, OpenAvailaivlityRequestConstants.MSG_FECHA_INICIO_FIN_INVALIDAS);
+		assertExistsValidationMessage(validations, MSG_FECHA_INICIO_FIN_INVALIDAS);
 		
 		// Test 2
 		validRequest.setStartDate(LocalDate.of(2022, 5, 1));
 		validRequest.setEndDate(LocalDate.of(2021, 6, 1));
 		validations = validator.validate(validRequest);
-		assertExistsValidationMessage(validations, OpenAvailaivlityRequestConstants.MSG_FECHA_INICIO_FIN_INVALIDAS);
+		assertExistsValidationMessage(validations, MSG_FECHA_INICIO_FIN_INVALIDAS);
 
 		// Test 3
 		validRequest.setStartDate(LocalDate.of(2022, 5, 5));
 		validRequest.setEndDate(LocalDate.of(2022, 5, 4));
 		validations = validator.validate(validRequest);
-		assertExistsValidationMessage(validations, OpenAvailaivlityRequestConstants.MSG_FECHA_INICIO_FIN_INVALIDAS);
+		assertExistsValidationMessage(validations, MSG_FECHA_INICIO_FIN_INVALIDAS);
 	}
 
 	@Test

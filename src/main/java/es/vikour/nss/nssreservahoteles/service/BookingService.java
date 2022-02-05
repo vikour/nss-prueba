@@ -1,5 +1,7 @@
 package es.vikour.nss.nssreservahoteles.service;
 
+import javax.validation.Valid;
+
 import es.vikour.nss.nssreservahoteles.entity.Booking;
 import es.vikour.nss.nssreservahoteles.service.exceptions.BookingNotAvailableInDatesException;
 import es.vikour.nss.nssreservahoteles.service.exceptions.HotelNotFoundException;
@@ -26,7 +28,7 @@ public interface BookingService {
 	 * 		Si el hotel de la solicitud no tuviera disponibilidad con las fechas pasadas.
 	 */
 	
-	Booking openBooking(OpenBookingRequest request)
+	Booking openBooking(@Valid OpenBookingRequest request)
 		throws HotelNotFoundException, BookingNotAvailableInDatesException;
 
 }

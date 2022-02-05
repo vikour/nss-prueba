@@ -10,41 +10,58 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.vikour.nss.nssreservahoteles.entity.Availavility;
+import es.vikour.nss.nssreservahoteles.entity.Booking;
 import es.vikour.nss.nssreservahoteles.entity.Hotel;
 import es.vikour.nss.nssreservahoteles.repository.AvailavilityRepository;
+import es.vikour.nss.nssreservahoteles.repository.BookingRepository;
 import es.vikour.nss.nssreservahoteles.repository.HotelRepository;
+import es.vikour.nss.nssreservahoteles.service.BookingService;
 import es.vikour.nss.nssreservahoteles.service.HotelAvailavilityService;
 import es.vikour.nss.nssreservahoteles.service.HotelService;
+import es.vikour.nss.nssreservahoteles.service.exceptions.BookingNotAvailableInDatesException;
 import es.vikour.nss.nssreservahoteles.service.exceptions.HotelNotFoundException;
+import es.vikour.nss.nssreservahoteles.service.requests.HotelDateIntervalRequest;
 import es.vikour.nss.nssreservahoteles.service.requests.OpenAvailavilityRequest;
+import es.vikour.nss.nssreservahoteles.service.requests.OpenBookingRequest;
 import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
-public class HotelServiceImpl implements HotelService, HotelAvailavilityService {
+public class HotelServiceImpl implements HotelService, HotelAvailavilityService, BookingService {
 	
 	@Autowired
 	private HotelRepository hotelRepository;
 	
 	@Autowired
 	private AvailavilityRepository availavilityRepository;
+	
+	@Autowired
+	private BookingRepository bookingRepository;
 
 	
 	@Override
 	public List<Hotel> findAll() {
 		return hotelRepository.findAll();
 	}
+	
+	// Busca un htel por Id y si no lo encuentra lanza una excepción
+	private Hotel requireHotelOrThrowException(int hotelId) {
+		return hotelRepository
+				.findById(hotelId)
+				.orElseThrow(() -> new HotelNotFoundException(hotelId));
+	}
 
 	@Override
+	@Transactional
 	public void openAvailavility(@Valid OpenAvailavilityRequest request) throws HotelNotFoundException {
 		log.traceEntry();
 		
 		log.info("Buscando hotel...");
-		Hotel hotel = hotelRepository
-				.findById(request.getHotelId())
-				.orElseThrow(() -> new HotelNotFoundException(request.getHotelId()));
+		Hotel hotel = requireHotelOrThrowException(request.getHotelId());
 		
 		LocalDate currentDate = request.getStartDate();
 		LocalDate endDate = request.getEndDate();
@@ -123,5 +140,41 @@ public class HotelServiceImpl implements HotelService, HotelAvailavilityService 
 		}
 		
 		return allDaysAvailables;
+	}
+
+	@Override
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public Booking openBooking(@Valid OpenBookingRequest request)
+			throws HotelNotFoundException, BookingNotAvailableInDatesException {
+
+		// Se valida qu exista el hotel
+		Integer hotelId = request.getHotelId();
+		Hotel hotel = requireHotelOrThrowException(hotelId);
+		
+		// Se valida que hay habitaciones todo el intervalo de días
+		LocalDate dateFrom = request.getStartDate();
+		LocalDate dateTo = request.getEndDate();
+		
+		if (!hotelHasAllDaysAvailables(hotel, dateFrom, dateTo))
+			throw new BookingNotAvailableInDatesException(dateFrom, dateTo , hotelId);
+
+		// Update rooms in hotels
+		for (Availavility availavility : availavilityRepository.findByHotelAndBetweenDates(hotel, dateFrom, dateTo)) {
+			int rooms = availavility.getRooms();
+			availavility.setRooms(rooms - 1);
+			availavilityRepository.save(availavility);
+		}
+		
+		// Se crea la reserva
+		Booking booking = Booking.builder()
+				.hotel(hotel)
+				.dateFrom(dateFrom)
+				.dateTo(dateTo)
+				.email(request.getEmail())
+				.build();
+		
+		bookingRepository.save(booking);
+		
+		return booking;
 	}
 }
