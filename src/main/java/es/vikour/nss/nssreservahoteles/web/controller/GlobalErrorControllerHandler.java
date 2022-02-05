@@ -3,8 +3,10 @@ package es.vikour.nss.nssreservahoteles.web.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import es.vikour.nss.nssreservahoteles.service.exceptions.HotelNotFoundException;
 import es.vikour.nss.nssreservahoteles.web.dto.error.ApiError;
@@ -28,6 +30,20 @@ public class GlobalErrorControllerHandler {
 		apiError.addValidationErrors(ex.getBindingResult());
 		return buildResponseEntity(apiError);
 	}
+	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class) 
+	public ResponseEntity<ApiError> methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+		String msg = String.format("El campo '%s' con el valor '%s' es incorrecto", ex.getName(), ex.getValue());
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, msg, ex);
+		return buildResponseEntity(apiError);
+	}
+	
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public ResponseEntity<ApiError> missingServletRequestParameterException(MissingServletRequestParameterException ex) {
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Se esperaba el parámetro " + ex.getParameterName(), ex);
+		return buildResponseEntity(apiError);
+	}
+
 
 	private ResponseEntity<ApiError> buildResponseEntity(ApiError apiError) {
 		return new ResponseEntity<ApiError>(apiError, apiError.getHttpStatus());

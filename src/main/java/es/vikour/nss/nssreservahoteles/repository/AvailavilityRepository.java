@@ -16,5 +16,8 @@ public interface AvailavilityRepository extends JpaRepository<Availavility, Avai
 	
 	@Query("SELECT a FROM Availavility a WHERE a.availavilityPK.hotel = :hotel AND a.availavilityPK.date BETWEEN :startDate AND :endDate")
 	List<Availavility> findByHotelAndBetweenDates(Hotel hotel, LocalDate startDate, LocalDate endDate);
+
+	@Query("SELECT a FROM Availavility a WHERE a.availavilityPK.hotel = :hotel AND a.availavilityPK.date BETWEEN :startDate AND :endDate AND a.rooms > 0 ")
+	List<Availavility> findByHotelAndBetweenDatesAndRoomsAvailable(Hotel hotel, LocalDate startDate, LocalDate endDate);
 	
 }

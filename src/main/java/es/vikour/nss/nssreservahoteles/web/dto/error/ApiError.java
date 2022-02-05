@@ -1,9 +1,9 @@
 package es.vikour.nss.nssreservahoteles.web.dto.error;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.util.Lists;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -33,8 +33,10 @@ public class ApiError {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private LocalDateTime timestamp;
 	private String message;
+	private String debugMessage;
 	@JsonInclude(Include.NON_EMPTY)
 	private List<ApiSubError> subErrors;
+	
 	
 
 	public ApiError(HttpStatus httpStatus, String message, String debugMessage) {
@@ -42,7 +44,8 @@ public class ApiError {
 		this.httpStatus = httpStatus;
 		this.message = message;
 		this.timestamp = LocalDateTime.now();
-		this.subErrors = Lists.newArrayList();
+		this.subErrors = new ArrayList<ApiSubError>();
+		this.debugMessage= debugMessage;
 	}
 
 	public ApiError(HttpStatus status, Throwable ex) {
