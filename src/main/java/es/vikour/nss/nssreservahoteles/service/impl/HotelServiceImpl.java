@@ -1,7 +1,9 @@
 package es.vikour.nss.nssreservahoteles.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -81,5 +83,45 @@ public class HotelServiceImpl implements HotelService, HotelAvailavilityService 
 		
 		log.debug("Disponiblidad abierta satisfactoriamente");
 		log.traceExit();
+	}
+
+	@Override
+	public List<Hotel> findAllWithRoomsAvailableBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
+		Objects.requireNonNull(dateFrom, "La fecha inicio es obligatoria");
+		Objects.requireNonNull(dateTo, "La fecha fin es obligatoria");
+		
+		return hotelRepository.findAllWithRoomsAvailable(dateFrom, dateTo).stream()
+			// Se filtra por aquellos hoteles que no tienen dias sin disponibilidad entre fechas
+			.filter((h) -> hotelHasAllDaysAvailables(h, dateFrom, dateTo))
+			.collect(Collectors.toList());
+	}
+
+	
+	/**
+	 * Comprueba que el hotel tenga disponibilidad todos los dias entre las fechas pasadas como argumento
+	 * 
+	 * @param hotel		Un hotel
+	 * @param dateFrom	Fecha inicio
+	 * @param dateTo	Fecha fin
+	 * 
+	 * @return <code>true</code> si tiene disponibilidad todos los días entre las fechas, <code>false</code>
+	 * 		   en otro caso
+	 */
+	private boolean hotelHasAllDaysAvailables(Hotel hotel, LocalDate dateFrom, LocalDate dateTo) {
+		boolean allDaysAvailables = true;
+		
+		List<LocalDate> datesAvailables = 
+				availavilityRepository.findByHotelAndBetweenDatesAndRoomsAvailable(hotel, dateFrom, dateTo)
+				.stream().map( av -> av.getAvailavilityPK().getDate())
+				.collect(Collectors.toList());
+		
+		LocalDate currentDate = dateFrom;
+		
+		while ( allDaysAvailables && currentDate.compareTo(dateTo) <= 0) {
+			allDaysAvailables = datesAvailables.contains(currentDate);
+			currentDate = currentDate.plusDays(1);
+		}
+		
+		return allDaysAvailables;
 	}
 }
