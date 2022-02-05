@@ -22,7 +22,6 @@ import java.time.LocalDate;
  */
 
 @Data
-@ToString
 @EqualsAndHashCode
 @Entity
 @Table(name = "availavility")
@@ -42,6 +41,11 @@ public class Availavility {
 		this.availavilityPK.setDate(date);
 		this.availavilityPK.setHotel(hotel);
 		this.rooms = rooms;
+	}
+
+	@Override
+	public String toString() {
+		return "Availavility(" + availavilityPK.getDate() + ", rooms=" + rooms + ", hotel_id=" + availavilityPK.getHotel().getId() + ")";
 	}
 
 }

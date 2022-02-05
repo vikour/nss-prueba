@@ -33,7 +33,7 @@ import es.vikour.nss.nssreservahoteles.service.impl.HotelServiceImpl;
 import es.vikour.nss.nssreservahoteles.service.requests.OpenAvailavilityRequest;
 
 @ExtendWith(SpringExtension.class)
-class HotelAvailavilityServiceTest {
+class OpenAvailavilityServiceTest {
 
 	@Autowired
 	private HotelAvailavilityService availavilityService;
@@ -43,7 +43,7 @@ class HotelAvailavilityServiceTest {
 	
 	@MockBean
 	private AvailavilityRepository availavilityRepository;
-	
+		
 	// Testing data
 	private static Hotel hotelSelected;
 	private static final int HOTEL_ID = 1;
@@ -246,5 +246,9 @@ class HotelAvailavilityServiceTest {
 		Mockito.verify(availavilityRepository, Mockito.times(expectedInsert.size())).save(captor.capture());
 		assertEquals(expectedInsert, captor.getAllValues());
 	}
+	
+	
+	
+	
 
 }
