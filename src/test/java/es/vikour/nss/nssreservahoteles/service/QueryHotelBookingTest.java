@@ -28,18 +28,13 @@ import es.vikour.nss.nssreservahoteles.entity.Hotel;
 import es.vikour.nss.nssreservahoteles.repository.AvailavilityRepository;
 import es.vikour.nss.nssreservahoteles.repository.BookingRepository;
 import es.vikour.nss.nssreservahoteles.repository.HotelRepository;
+import es.vikour.nss.nssreservahoteles.service.exceptions.BookingNotFoundException;
 import es.vikour.nss.nssreservahoteles.service.exceptions.HotelNotFoundException;
 import es.vikour.nss.nssreservahoteles.service.impl.HotelServiceImpl;
 import es.vikour.nss.nssreservahoteles.service.requests.HotelDateIntervalRequest;
 
 @ExtendWith(SpringExtension.class)
 class QueryHotelBookingTest {
-
-	private static final LocalDate END_DATE = LocalDate.of(2022, 1, 10);
-
-	private static final LocalDate START_DATE = LocalDate.of(2022, 1, 5);
-
-	private static final int HOTEL_ID = 1;
 
 	@Autowired
 	private BookingService bookingService;
@@ -53,9 +48,6 @@ class QueryHotelBookingTest {
 	@MockBean
 	private BookingRepository bookRepository;
 	
-	// Test data
-	private HotelDateIntervalRequest request;
-	private Hotel hotelSelected;
 	
 	@TestConfiguration
 	public static class HotelServiceTestConfig {
@@ -72,96 +64,53 @@ class QueryHotelBookingTest {
 		reset(hotelRepository);
 		reset(availavilityRepository);
 		reset(bookRepository);
-		
-		// set up valid request
-		request = new HotelDateIntervalRequest();
-		request.setHotelId(HOTEL_ID);
-		request.setStartDate(START_DATE);
-		request.setEndDate(END_DATE);
-		
-		// set up hotel
-		hotelSelected = new Hotel();
-		hotelSelected.setId(HOTEL_ID);
-		hotelSelected.setName("Hotel");
-		hotelSelected.setCategory(1);
-		
 	}
 	
 	@Test
-	@DisplayName("La solicitud no debería de ser nula")
+	@DisplayName("El ID de la reserva no debería de ser nulo")
 	public void testQueryBooking_whenNull_thenError() {
 		assertThrows(NullPointerException.class,() -> {
-			bookingService.queryHotelBooking(null);
+			bookingService.queryBooking(null);
 		});
+		verify(bookRepository, never()).findById(1);
 	}
-
 	
 	@Test
-	@DisplayName("Cuando el hotel pasado no existe, entonces error")
-	public void testQueryHotelBooking_whenHotelNotfound_thenError() {
-		// set up
-		when(hotelRepository.findById(request.getHotelId())).thenReturn(Optional.empty());
+	@DisplayName("Cuando se busca por una reserva que no existe, debería de devolver excepción")
+	public void testQueryBooking_whenNoBookingFound_thenError() {
+		when(bookRepository.findById(1)).thenReturn(Optional.empty());
 		
-		// Test
-		assertThrows(HotelNotFoundException.class, () -> {
-			bookingService.queryHotelBooking(request);
+		// test
+		assertThrows(BookingNotFoundException.class,() -> {
+			bookingService.queryBooking(1);
 		});
 		
-		// assert
-		verify(hotelRepository).findById(request.getHotelId());
-		verify(bookRepository, never()).findAllByHotelAndBetweenDates(any(), any(), any());
+		verify(bookRepository).findById(1);
 	}
-
 	
 	@Test
-	@DisplayName("Cuando la base de datos no devuevle nada, entonces empty list")
-	public void testQueryHotelBooking_whenHotelNoBooking_thenReturnEmptyList() {
-		// set up
-		when(hotelRepository.findById(HOTEL_ID)).thenReturn(Optional.of(hotelSelected));
-		when(bookRepository.findAllByHotelAndBetweenDates(hotelSelected, START_DATE, END_DATE)).thenReturn(Lists.newArrayList());
-
-		// check
-		List<Booking> bookingList = bookingService.queryHotelBooking(request);
+	@DisplayName("Cuando se busca una reserva que existe, debería de devolver esa reserva")
+	public void testQueryBooking_whenBookingFound_thenReturnIt() {
+		Hotel hotel = new Hotel();
+		hotel.setId(1);
+		hotel.setCategory(1);
+		hotel.setName("Hotel");
 		
-		// assert
-		verify(hotelRepository).findById(request.getHotelId());
-		verify(bookRepository).findAllByHotelAndBetweenDates(hotelSelected, START_DATE, END_DATE);
+		Booking expectedBooking = Booking.builder()
+				.hotel(hotel)
+				.dateFrom(LocalDate.of(2022, 1, 5))
+				.dateTo(LocalDate.of(2022, 1, 6))
+				.email("test@test.com")
+				.build();
 		
-		assertNotNull(bookingList);
-		assertTrue(bookingList.isEmpty());
+		when(bookRepository.findById(1)).thenReturn(Optional.of(expectedBooking));
+		
+		// test
+		Booking booking = bookingService.queryBooking(1);
+		
+		// Assert
+		verify(bookRepository).findById(1);
+		assertEquals(expectedBooking, booking);
 	}
 
-	@Test
-	@DisplayName("Cuando la base de datos devuelve una lista, entonces se devuelve esa lista")
-	public void testQueryHotelBooking_whenHotelHasBooking_thenReturnIt() {
-		// set up
-		List<Booking> bookingListExpected = Lists.list(
-				Booking.builder()
-				.hotel(hotelSelected)
-				.dateFrom(START_DATE)
-				.dateTo(END_DATE)
-				.email("test@email.com")
-				.build(), 
-				Booking.builder()
-				.hotel(hotelSelected)
-				.dateFrom(START_DATE)
-				.dateTo(END_DATE)
-				.email("test2@email.com")
-				.build());
-		
-		when(hotelRepository.findById(HOTEL_ID)).thenReturn(Optional.of(hotelSelected));
-		when(bookRepository.findAllByHotelAndBetweenDates(hotelSelected, START_DATE, END_DATE))
-			.thenReturn(bookingListExpected);
-
-		// check
-		List<Booking> bookingList = bookingService.queryHotelBooking(request);
-		
-		// assert
-		verify(hotelRepository).findById(request.getHotelId());
-		verify(bookRepository).findAllByHotelAndBetweenDates(hotelSelected, START_DATE, END_DATE);
-		
-		assertNotNull(bookingList);
-		assertFalse(bookingList.isEmpty());
-		assertEquals(bookingListExpected, bookingList);
-	}
 }

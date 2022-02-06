@@ -3,9 +3,11 @@ package es.vikour.nss.nssreservahoteles.service;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import es.vikour.nss.nssreservahoteles.entity.Booking;
 import es.vikour.nss.nssreservahoteles.service.exceptions.BookingNotAvailableInDatesException;
+import es.vikour.nss.nssreservahoteles.service.exceptions.BookingNotFoundException;
 import es.vikour.nss.nssreservahoteles.service.exceptions.HotelNotFoundException;
 import es.vikour.nss.nssreservahoteles.service.requests.HotelDateIntervalRequest;
 import es.vikour.nss.nssreservahoteles.service.requests.OpenBookingRequest;
@@ -44,5 +46,17 @@ public interface BookingService {
 	 */
 
 	List<Booking> queryHotelBooking(@Valid HotelDateIntervalRequest request);
+	
+	/**
+	 * Permite obtener una reserva por su ID
+	 * 
+	 * @param bookingId	El id de la reserva buscada
+	 * @return Una reserva con el ID pasado como argumento 
+	 * 
+	 * @throws BookingNotFoundException
+	 * 	Si no existiera la reserva con ID.
+	 */
+	
+	Booking queryBooking(@NotNull Integer bookingId) throws BookingNotFoundException;
 	
 }
