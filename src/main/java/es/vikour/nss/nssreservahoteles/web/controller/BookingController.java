@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -126,6 +127,26 @@ public class BookingController {
 		Booking booking = bookingService.queryBooking(bookingId);
 		BookingDto dto = bookingToDtoConverter.toDto(booking);
 		return ResponseEntity.ok(dto);
+	}
+	
+
+	@Operation(
+			summary = "Cancela una reserva",
+			description = "Permite cancelar una reserva proporcionando el ID",
+			parameters = {
+				  @Parameter(name = "bookingId", description = "El identificador de la reserva", example = "1")
+			 })
+		@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "Se devuelve los datos de la reserva"),
+			@ApiResponse(responseCode = "404", description = "No se ha encontrado la reserva con el ID proporcionado",
+					content = {@Content(mediaType = "appliaction/json", schema = @Schema(implementation = ApiError.class))})
+		})
+	@DeleteMapping(path = "booking/{bookingId}")
+	public ResponseEntity<String> cancelBooking(@PathVariable("bookingId") Integer bookingId) 
+	{
+		Objects.requireNonNull(bookingId, "El id de la reserva es obligatorio");
+		bookingService.cancelBooking(bookingId);
+		return ResponseEntity.ok("Reserva cancelada");
 	}
 
 }

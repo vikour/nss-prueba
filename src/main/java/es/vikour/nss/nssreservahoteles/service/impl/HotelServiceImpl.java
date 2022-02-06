@@ -196,4 +196,25 @@ public class HotelServiceImpl implements HotelService, HotelAvailavilityService,
 		return bookingRepository.findById(bookingId)
 				.orElseThrow(() -> new BookingNotFoundException(bookingId));
 	}
+
+	@Override
+	@Transactional
+	public void cancelBooking(@NotNull Integer bookingId) throws BookingNotFoundException {
+		log.info("Se va a cancelar la reserva {}", bookingId);
+		Booking booking = queryBooking(bookingId);
+		
+		log.info("Se elimina la reserva");
+		bookingRepository.delete(booking);
+		
+		log.info("Se actualiza las disponibilidades del hotel {}", booking.getHotel());
+		List<Availavility> hotelAvailavilities = 
+				availavilityRepository.findByHotelAndBetweenDates(booking.getHotel(), booking.getDateFrom(), booking.getDateTo());
+		
+		for (Availavility availavility : hotelAvailavilities) {
+			int rooms = availavility.getRooms();
+			availavility.setRooms(rooms + 1);
+			availavilityRepository.save(availavility);
+		}
+		
+	}
 }

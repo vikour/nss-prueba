@@ -59,4 +59,15 @@ public interface BookingService {
 	
 	Booking queryBooking(@NotNull Integer bookingId) throws BookingNotFoundException;
 	
+	/**
+	 * Cancela una reserva hecha previamente. Al hacerlo, la borra del sistema y actualiza la disponibilidad
+	 * del hotel.
+	 * 
+	 * @param bookingId	El ID de la reserva
+	 * 
+	 * @throws BookingNotFoundException
+	 * 	Si no encuentra la reserva
+	 */
+	void cancelBooking(@NotNull Integer bookingId) throws BookingNotFoundException;
+	
 }
