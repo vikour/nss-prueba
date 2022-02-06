@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import es.vikour.nss.nssreservahoteles.service.exceptions.BookingNotAvailableInDatesException;
+import es.vikour.nss.nssreservahoteles.service.exceptions.BookingNotFoundException;
 import es.vikour.nss.nssreservahoteles.service.exceptions.HotelNotFoundException;
 import es.vikour.nss.nssreservahoteles.web.dto.error.ApiError;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +23,13 @@ public class GlobalErrorControllerHandler {
 	public ResponseEntity<ApiError> hotelNotFoundException(HotelNotFoundException ex) {
 		log.warn(ex);
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "No se ha encontrado el hotel", ex);
+		return buildResponseEntity(apiError);
+	}
+	
+	@ExceptionHandler(BookingNotFoundException.class)
+	public ResponseEntity<ApiError> bookingNotFoundException(BookingNotFoundException ex) {
+		log.warn(ex);
+		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "No se ha encontrado la reserva", ex);
 		return buildResponseEntity(apiError);
 	}
 	

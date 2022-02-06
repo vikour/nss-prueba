@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import es.vikour.nss.nssreservahoteles.service.BookingService;
 import es.vikour.nss.nssreservahoteles.service.HotelAvailavilityService;
 import es.vikour.nss.nssreservahoteles.service.HotelService;
 import es.vikour.nss.nssreservahoteles.service.exceptions.BookingNotAvailableInDatesException;
+import es.vikour.nss.nssreservahoteles.service.exceptions.BookingNotFoundException;
 import es.vikour.nss.nssreservahoteles.service.exceptions.HotelNotFoundException;
 import es.vikour.nss.nssreservahoteles.service.requests.HotelDateIntervalRequest;
 import es.vikour.nss.nssreservahoteles.service.requests.OpenAvailavilityRequest;
@@ -186,5 +188,12 @@ public class HotelServiceImpl implements HotelService, HotelAvailavilityService,
 		List<Booking> bookingInHotel = bookingRepository.findAllByHotelAndBetweenDates(hotel, request.getStartDate(), request.getEndDate());
 		log.info("Se han encontrado {} registros", bookingInHotel.size());
 		return log.traceExit(bookingInHotel);
+	}
+
+	@Override
+	public Booking queryBooking(@NotNull Integer bookingId) throws BookingNotFoundException {
+		log.info("Consultando reserva con ID {}...", bookingId);
+		return bookingRepository.findById(bookingId)
+				.orElseThrow(() -> new BookingNotFoundException(bookingId));
 	}
 }

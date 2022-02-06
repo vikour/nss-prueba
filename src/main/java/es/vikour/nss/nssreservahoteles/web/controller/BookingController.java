@@ -2,6 +2,7 @@ package es.vikour.nss.nssreservahoteles.web.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import javax.validation.Valid;
 
@@ -104,6 +105,27 @@ public class BookingController {
 		List<Booking> hotelBookingList = bookingService.queryHotelBooking(request);
 		List<BookingDto> dtoList = bookingToDtoConverter.toDto(hotelBookingList);
 		return log.traceExit(ResponseEntity.ok(dtoList));
+	}
+	
+
+	@Operation(
+			summary = "Consulta los datos de una reserva",
+			description = "Devuelve todos los datos de una reserva por ID",
+			parameters = {
+				  @Parameter(name = "bookingId", description = "El identificador de la reserva", example = "1")
+			 })
+		@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "Se devuelve los datos de la reserva"),
+			@ApiResponse(responseCode = "404", description = "No se ha encontrado la reserva con el ID proporcionado",
+					content = {@Content(mediaType = "appliaction/json", schema = @Schema(implementation = ApiError.class))})
+		})
+	@GetMapping(path = "booking/{bookingId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<BookingDto> queryBooking(@PathVariable("bookingId") Integer bookingId) 
+	{
+		Objects.requireNonNull(bookingId, "El id de la reserva es obligatorio");
+		Booking booking = bookingService.queryBooking(bookingId);
+		BookingDto dto = bookingToDtoConverter.toDto(booking);
+		return ResponseEntity.ok(dto);
 	}
 
 }
