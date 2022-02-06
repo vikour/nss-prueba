@@ -13,7 +13,7 @@ services:
       
   nss-hotel-reservas-app:
     container_name: nss-hotel-reservas-app
-    image: vikour/nss-reserva-hoteles:0.7.0-SNAPSHOT
+    image: vikour/nss-reserva-hoteles:0.8.0-SNAPSHOT
     ports:
       - "8080:8080"
     networks:
