@@ -1,18 +1,25 @@
 package es.vikour.nss.nssreservahoteles.web.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.vikour.nss.nssreservahoteles.entity.Booking;
 import es.vikour.nss.nssreservahoteles.service.BookingService;
+import es.vikour.nss.nssreservahoteles.service.requests.HotelDateIntervalRequest;
 import es.vikour.nss.nssreservahoteles.service.requests.OpenBookingRequest;
 import es.vikour.nss.nssreservahoteles.web.converter.BookingToDtoConverter;
 import es.vikour.nss.nssreservahoteles.web.converter.OpenBookingRequestToDtoConverter;
@@ -24,8 +31,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.log4j.Log4j2;
 
 @RestController
+@Log4j2
 public class BookingController {
 	
 	@Autowired
@@ -59,6 +68,24 @@ public class BookingController {
 		Booking bookingCreated = bookingService.openBooking(requestService);
 		BookingDto dto = bookingToDtoConverter.toDto(bookingCreated);
 		return new ResponseEntity<BookingDto>(dto, HttpStatus.CREATED);
+	}
+	
+	@GetMapping(path = "hotels/{hotelId}/booking")
+	public ResponseEntity<List<BookingDto>> queryHotelBooking(
+			@PathVariable("hotelId") Integer hotelId,
+			@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) 
+	{
+		log.traceEntry();
+		log.info("Contestando petición de consulta de reservas para el hotel {} desde {} hasta {}", hotelId, startDate, endDate);
+		HotelDateIntervalRequest request = new HotelDateIntervalRequest();
+		request.setHotelId(hotelId);
+		request.setStartDate(startDate);
+		request.setEndDate(endDate);
+		
+		List<Booking> hotelBookingList = bookingService.queryHotelBooking(request);
+		List<BookingDto> dtoList = bookingToDtoConverter.toDto(hotelBookingList);
+		return log.traceExit(ResponseEntity.ok(dtoList));
 	}
 
 }

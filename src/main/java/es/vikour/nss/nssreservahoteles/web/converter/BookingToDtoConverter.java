@@ -1,5 +1,8 @@
 package es.vikour.nss.nssreservahoteles.web.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -19,5 +22,15 @@ public interface BookingToDtoConverter {
 		@Mapping(target = "email", source="email")
 	})
 	BookingDto toDto(Booking booking);
+	
+
+	default List<BookingDto> toDto(List<Booking> bookingList) {
+		List<BookingDto> bookingDtoList = new ArrayList<>();
+
+		for (Booking booking : bookingList)
+			bookingDtoList.add(toDto(booking));
+		
+		return bookingDtoList;
+	}
 
 }

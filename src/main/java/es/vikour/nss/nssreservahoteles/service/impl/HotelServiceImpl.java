@@ -50,6 +50,7 @@ public class HotelServiceImpl implements HotelService, HotelAvailavilityService,
 	
 	// Busca un htel por Id y si no lo encuentra lanza una excepción
 	private Hotel requireHotelOrThrowException(int hotelId) {
+		log.info("Buscando hotel...");
 		return hotelRepository
 				.findById(hotelId)
 				.orElseThrow(() -> new HotelNotFoundException(hotelId));
@@ -60,7 +61,6 @@ public class HotelServiceImpl implements HotelService, HotelAvailavilityService,
 	public void openAvailavility(@Valid OpenAvailavilityRequest request) throws HotelNotFoundException {
 		log.traceEntry();
 		
-		log.info("Buscando hotel...");
 		Hotel hotel = requireHotelOrThrowException(request.getHotelId());
 		
 		LocalDate currentDate = request.getStartDate();
@@ -176,5 +176,15 @@ public class HotelServiceImpl implements HotelService, HotelAvailavilityService,
 		bookingRepository.save(booking);
 		
 		return booking;
+	}
+
+	@Override
+	public List<Booking> queryHotelBooking(@Valid HotelDateIntervalRequest request) {
+		log.traceEntry();
+		Hotel hotel = requireHotelOrThrowException(request.getHotelId());
+		log.info("Buscando reservas entre {} y {}", request.getStartDate(), request.getEndDate());
+		List<Booking> bookingInHotel = bookingRepository.findAllByHotelAndBetweenDates(hotel, request.getStartDate(), request.getEndDate());
+		log.info("Se han encontrado {} registros", bookingInHotel.size());
+		return log.traceExit(bookingInHotel);
 	}
 }

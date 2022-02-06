@@ -1,10 +1,13 @@
 package es.vikour.nss.nssreservahoteles.service;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import es.vikour.nss.nssreservahoteles.entity.Booking;
 import es.vikour.nss.nssreservahoteles.service.exceptions.BookingNotAvailableInDatesException;
 import es.vikour.nss.nssreservahoteles.service.exceptions.HotelNotFoundException;
+import es.vikour.nss.nssreservahoteles.service.requests.HotelDateIntervalRequest;
 import es.vikour.nss.nssreservahoteles.service.requests.OpenBookingRequest;
 
 /**
@@ -30,5 +33,16 @@ public interface BookingService {
 	
 	Booking openBooking(@Valid OpenBookingRequest request)
 		throws HotelNotFoundException, BookingNotAvailableInDatesException;
+	
+	/**
+	 * Busca en la base de datos las reservas hechas en el hotel pasado como argumento entre las fechas. En 
+	 * el resultado se incluiran aquellas reservas que contengan días entre las fechas pasadas. 
+	 * 
+	 * @param request	Petición de consulta de reservas
+	 * 
+	 * @return	Un listado con las reservas en el hotel con días entre las fechas proporcionadas.
+	 */
 
+	List<Booking> queryHotelBooking(@Valid HotelDateIntervalRequest request);
+	
 }
