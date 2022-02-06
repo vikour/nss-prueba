@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
+		<jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -39,11 +40,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -63,10 +59,42 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.4</version>
 		</dependency>
+		<dependency>
+      		<groupId>org.postgresql</groupId>
+      		<artifactId>postgresql</artifactId>
+      		<scope>runtime</scope>
+    	</dependency>
+		<dependency>
+      		<groupId>com.h2database</groupId>
+      		<artifactId>h2</artifactId>
+      		<scope>runtime</scope>
+    	</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+		
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>${jib-maven-plugin.version}</version>
+				<configuration>
+					<container>
+						<ports>
+							<port>8080</port>
+						</ports>
+						<jvmFlags>-Dspring.profiles.active=docker</jvmFlags>
+					</container>
+					<from>
+						<image>openjdk:11-jre</image>
+					</from>
+					<to>
+						<image>vikour/nss-reserva-hoteles:${project.version}</image>
+					</to>
+					
+				</configuration>
+			</plugin>
+		
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

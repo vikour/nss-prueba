@@ -1,5 +1,5 @@
 create table hotels (
-	id 		INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id 		SERIAL PRIMARY KEY,
 	name 	VARCHAR(100) NOT NULL,
 	category INT NOT NULL
 );
@@ -13,14 +13,13 @@ create table availavility (
 );
 
 CREATE TABLE bookings (
-	id 			INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id 			SERIAL PRIMARY KEY,
 	hotel_id 	INT NOT NULL,
 	date_from  	DATE NOT NULL,
 	date_to 	DATE NOT NULL,
 	email  		VARCHAR(100) NOT NULL,
 	FOREIGN KEY (id) REFERENCES hotels(id)
 );
-
 
 INSERT INTO hotels(name, category) VALUES ('Hotel Córdoba Center', 4);
 INSERT INTO hotels(name, category) VALUES ('Eurostars Palace', 4);
