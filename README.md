@@ -55,11 +55,19 @@ También se ha incluido una colección de POSTMAN en la siguiente ruta: **_src/i
 
 ### Acceso a la base de datos temporal
 
-Si se quiere saber qué está escribiendo el programa en la base de datos, realice los siguientes pasos con la aplicación iniciada.
+Si se quiere saber qué está escribiendo el programa en la base de datos, realice los siguientes pasos con la aplicación apagada.
 
-1. Acceder a la consola por medio del siguiente enlace [H2 Console](http://localhost:8080/h2-console).
+1. Iniciar la aplicación con el siguiente comando, así se habilitará el acceso a la base de datos:
+```sh
+./mvnw spring-boot:run
+```
+> usar el siguiente comando en caso de estar en Windows
+> ```sh
+> mvnw.cmd spring-boot:run
+> ```
+2.  Acceder a la consola por medio del siguiente enlace [H2 Console](http://localhost:8080/h2-console).
 
-2. Establecer la siguiente configuración:
+3. Establecer la siguiente configuración:
 
     - **Driver class**: org.h2.Driver
     - **JDBC URL**:     jdbc:h2:mem:nss-hoteles-db
