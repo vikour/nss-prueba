@@ -41,7 +41,7 @@ git clone https://github.com/vikour/nss-prueba.git && cd nss-prueba
 
 Una vez compilado e instalado el programa, iniciar el servicio con el siguiente comando:
 ```
-java -jar target/nss-reserva-hoteles-0.8.0-SNAPSHOT.jar
+java -jar target/nss-reserva-hoteles-0.8.1-SNAPSHOT.jar
 ```
 Al ejecutarlo se iniciará el servicio REST en la siguietne URL: [http://localhost:8080](http://localhost:8080). Por ejemplo, podrá listar los hoteles existentes a través de la siguiente URL: [http://localhost:8080/hotels](http://localhost:8080/hotels)
 

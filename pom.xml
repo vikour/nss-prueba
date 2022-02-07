@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>es.vikour.nss</groupId>
 	<artifactId>nss-reserva-hoteles</artifactId>
-	<version>0.8.0-SNAPSHOT</version>
+	<version>0.8.1-SNAPSHOT</version>
 	<name>nss-reserva-hoteles</name>
 	<description>API REST para realizar reservas en hoteles</description>
 
