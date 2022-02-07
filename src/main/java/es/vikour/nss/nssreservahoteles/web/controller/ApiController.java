@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 @OpenAPIDefinition(
 info = @Info(
 	title = "API reserva de hoteles",
-	version = "0.8.2-SNAPSHOT",
+	version = "1.0.0",
 	description = "Esta API permite gestionar la disponibilidad de los hoteles y las reservas",
 	contact = @Contact(name = "Victor Manuel", email = "vikour92@gmail.com")
 
