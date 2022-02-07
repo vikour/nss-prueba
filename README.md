@@ -87,6 +87,20 @@ La documentación del API REST la puede encontrar en la siguiente dirección : [
 
 ### Descripción de la imagen docker
 
+La imagen de docker contiene las siguientes propiedades de entorno que le son necesarias para acceder al origen de datos:
+
+- DATASOURCE_URL - JDBC URL hacia la base de datos
+> ej.: jdbc:postgresql://nss-db/postgres
+- DATASOURCE_DRIVER - Driver de conexión con la base de datos
+> ej.: org.postgresql.Driver
+- DATASOURCE_USER - Usuario de acceso a la base de datos
+> ej.: user
+- DATASOURCE_PASS - Contraseña de acceso a la base de datos
+> ej.: password
+- DATASOURCE_DIALECT - Dialecto usado en la base de datos
+> ej.: org.hibernate.dialect.PostgreSQLDialect
+
+La imagen ofrecerá servicio por el puerto 8080, pero puede ser modificado por el contenedor hacia otro puerto local.
 
 ## Contact
 
