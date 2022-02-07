@@ -11,7 +11,6 @@ public class HotelBookingRuntimeException extends NestedRuntimeException {
 
 	public HotelBookingRuntimeException(String msg) {
 		super(msg);
-		// TODO Auto-generated constructor stub
 	}
 
 }

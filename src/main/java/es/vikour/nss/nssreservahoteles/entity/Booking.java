@@ -1,7 +1,14 @@
 package es.vikour.nss.nssreservahoteles.entity;
 
+import static es.vikour.nss.nssreservahoteles.entity.EntityValidationConstants.ERROR_EMAIL_FORMAT;
+import static es.vikour.nss.nssreservahoteles.entity.EntityValidationConstants.ERROR_EMAIL_MANDATORY;
+import static es.vikour.nss.nssreservahoteles.entity.EntityValidationConstants.ERROR_EMAIL_SIZE;
+import static es.vikour.nss.nssreservahoteles.entity.EntityValidationConstants.ERROR_END_DATE_MANDATORY;
+import static es.vikour.nss.nssreservahoteles.entity.EntityValidationConstants.ERROR_HOTEL_MANDATORY;
+import static es.vikour.nss.nssreservahoteles.entity.EntityValidationConstants.ERROR_START_DATE_MANDATORY;
+import static es.vikour.nss.nssreservahoteles.entity.EntityValidationConstants.ERROR_START_GT_END_DATE;
+
 import java.time.LocalDate;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,17 +27,14 @@ import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import static es.vikour.nss.nssreservahoteles.entity.EntityValidationConstants.*;
-
 /**
- * Representa una reserva desde una fecha hasta otra, por una persona identificada por 
+ * Representa una reserva desde una fecha hasta otra, por una persona identificada por
  * el correo y en un hotel.
- * 
+ *
  * @author Víctor Manuel Ortiz Guardeño
  *
  */
@@ -46,7 +50,7 @@ public class Booking {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "hotel_id")
 	@NotNull(message = ERROR_HOTEL_MANDATORY)
@@ -59,21 +63,21 @@ public class Booking {
 	@NotNull(message = ERROR_END_DATE_MANDATORY)
 	@Column(name = "date_to")
 	private LocalDate dateTo;
-	
+
 	@NotNull(message = ERROR_EMAIL_MANDATORY)
 	@Email(message = ERROR_EMAIL_FORMAT)
 	@Size(max = 100, message = ERROR_EMAIL_SIZE)
 	private String email;
-	
+
 	protected Booking() {} // protegido, para que pueda construirlo hibernate
-	
+
 	@Transient
 	@AssertTrue(message = ERROR_START_GT_END_DATE)
 	public boolean isDateFromLessOrEqualThanDateTo() {
-		return dateFrom != null && 
+		return dateFrom != null &&
 				dateTo != null &&
 				dateFrom.compareTo(dateTo) <= 0;
 	}
-	
-	
+
+
 }

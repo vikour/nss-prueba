@@ -1,6 +1,6 @@
 package es.vikour.nss.nssreservahoteles.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,29 +24,29 @@ import es.vikour.nss.nssreservahoteles.service.impl.HotelServiceImpl;
 
 @ExtendWith(SpringExtension.class)
 class HotelServiceTest {
-	
+
 	@Autowired
 	private HotelService hotelService;
-	
+
 	@MockBean
 	private HotelRepository hotelRepository;
 
 	@MockBean
 	private AvailavilityRepository availavilityRepository;
-	
+
 	@MockBean
 	private BookingRepository bookRepository;
-	
+
 	@TestConfiguration
 	public static class HotelServiceTestConfig {
-		
+
 		@Bean
 		public HotelService hotelService() {
 			return new HotelServiceImpl();
 		}
-		
+
 	}
-	
+
 	@BeforeEach
 	public void setup() {
 		Mockito.reset(hotelRepository);
@@ -55,13 +55,13 @@ class HotelServiceTest {
 	@Test
 	void testFindAll_whenThereIsNoHotel_thenEmptyList() {
 		ArrayList<Hotel> expectedList = Lists.newArrayList();
-		
+
 		// Setting up...
 		Mockito.when(hotelRepository.findAll()).thenReturn(expectedList);
-		
+
 		// Test
 		List<Hotel> list = hotelService.findAll();
-		
+
 		// Check
 		assertEquals(expectedList, list);
 	}
@@ -69,14 +69,14 @@ class HotelServiceTest {
 	@Test
 	void testFindAll_whenThereAreHotels_thenListThem() {
 		ArrayList<Hotel> expectedList = Lists.newArrayList();
-		
+
 		// Setting up...
 		Hotel hotel = new Hotel();
 		hotel.setName("Hotel A");
 		hotel.setId(1);
 		hotel.setCategory(1);
 		expectedList.add(hotel);
-		
+
 		hotel = new Hotel();
 		hotel.setName("Hotel B");
 		hotel.setId(2);
@@ -88,12 +88,12 @@ class HotelServiceTest {
 		hotel.setId(2);
 		hotel.setCategory(1);
 		expectedList.add(hotel);
-		
+
 		Mockito.when(hotelRepository.findAll()).thenReturn(expectedList);
-		
+
 		// Test
 		List<Hotel> list = hotelService.findAll();
-		
+
 		// Check
 		assertEquals(expectedList, list);
 	}
