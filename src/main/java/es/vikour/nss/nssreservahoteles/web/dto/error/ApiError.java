@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -27,14 +29,24 @@ import lombok.Data;
 
 @Data
 @JsonInclude(content = Include.NON_NULL)
+@Schema(description = "Información acerca del error que se ha producido")
 public class ApiError {
 	
+	@Schema(description = "Error HTTP devuelto", enumAsRef = true, example = "404")
 	private HttpStatus httpStatus;
+	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+	@Schema(description = "Fecha y hora del error", pattern = "dd-MM-yyyy hh:mm:ss", example = "2022-02-05 14:33:02")
 	private LocalDateTime timestamp;
+	
+	@Schema(description = "Mensaje del error producido", example = "Mensaje de error")
 	private String message;
+	
+	@Schema(description = "Mensaje exacto del error que se ha producido en el servidor, por motivo de depuración", example = "DEBUG mensaje de error")
 	private String debugMessage;
+	
 	@JsonInclude(Include.NON_EMPTY)
+	@Schema(description = "Errores anidados al principal que extienden la información", subTypes = {ApiValidationError.class})
 	private List<ApiSubError> subErrors;
 	
 	

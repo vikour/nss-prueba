@@ -1,0 +1,42 @@
+package es.vikour.nss.nssreservahoteles.web.controller;
+
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import es.vikour.nss.nssreservahoteles.web.dto.OpenAvailavilityRequestDto;
+import es.vikour.nss.nssreservahoteles.web.dto.error.ApiError;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Disponibilidad")
+public interface AvailableController extends ApiController{
+
+	@Operation(
+			summary = "Abre disponibilidad para un hotel",
+			description = "Abre disponibilidad para el hotel, fechas y número de habitaciones indicados. Si existía una disponibilidad para un día entre las fechas, " + 
+			              "no se sobreescribirá",
+			parameters = @Parameter(name = "hotelId", description = "El código del hotel"))
+	@ApiResponse(responseCode = "201", description = "Disponibilidad abierta satisfactoriamente")
+	@ApiResponse(responseCode = "404", description = "No se ha encontrado el hotel",
+			content = {@Content(mediaType = "appliaction/json", schema = @Schema(implementation = ApiError.class, example = "example"))})
+	@ApiResponse(responseCode = "400", description = "Error de validación",
+			content = {@Content(mediaType = "appliaction/json", schema = @Schema(implementation = ApiError.class))})
+	@PostMapping(
+				path = "/hotels/{hotelId}/availavility",
+				consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(code = HttpStatus.CREATED)
+	String openHotelAvailavility(
+			@PathVariable("hotelId") int hotelId,
+			@RequestBody @Valid OpenAvailavilityRequestDto request);
+
+}

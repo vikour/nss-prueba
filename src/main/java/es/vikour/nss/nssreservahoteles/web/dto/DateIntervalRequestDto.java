@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,9 +21,12 @@ public class DateIntervalRequestDto {
 
 	@NotNull(message = MSG_FECHA_INICIO_OBLIGATORIA)
 	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Schema(description = "Fecha de inicio", example = "2022-02-05", pattern = "yyyy-MM-dd")
 	protected LocalDate startDate;
+	
 	@NotNull(message = MSG_FECHA_FIN_OBLIGATORIA)
 	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Schema(description = "Fecha de fin", example = "2022-02-05", pattern = "yyyy-MM-dd")
 	protected LocalDate endDate;
 
 	@JsonIgnore
