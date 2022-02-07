@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "d845b55e-1197-479d-a219-b2276e0cefd0",
+		"name": "Reserva Hoteles",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Obtener hoteles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/hotels",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hotels"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener hoteles con disponibilidad",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/availavility?startDate=2022-01-28&endDate=2022-01-29",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"availavility"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2022-01-28"
+						},
+						{
+							"key": "endDate",
+							"value": "2022-01-29"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener reservas de hotel",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/hotels/2/booking?startDate=2022-01-30&endDate=2022-02-28",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hotels",
+						"2",
+						"booking"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2022-01-30"
+						},
+						{
+							"key": "endDate",
+							"value": "2022-02-28"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar reserva",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/booking/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"booking",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Abrir disponibilidad",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"startDate\": \"2022-01-28\",\n  \"endDate\": \"2022-01-30\",\n  \"numberRooms\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/hotels/2/availavility",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hotels",
+						"2",
+						"availavility"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hacer reserva",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"startDate\": \"2022-01-29\",\n  \"endDate\": \"2022-01-30\",\n  \"email\": \"vikour92@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/hotels/2/booking",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hotels",
+						"2",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancelar reserva",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/booking/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"booking",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

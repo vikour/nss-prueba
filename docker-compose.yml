@@ -1,0 +1,32 @@
+version: '3'
+services:
+      
+  nss-db:
+    container_name: nss-db
+    image: postgres
+    networks:
+      - net
+    volumes:
+      - "$PWD/src/main/sql/scheme-postgres.sql:/docker-entrypoint-initdb.d/scheme-postgres.sql"
+    environment:
+      - POSTGRES_PASSWORD=1234
+      
+  nss-hotel-reservas-app:
+    container_name: nss-hotel-reservas-app
+    image: vikour/nss-reserva-hoteles:0.8.0-SNAPSHOT
+    ports:
+      - "8080:8080"
+    networks:
+      - net
+    depends_on:
+      - nss-db
+    environment:
+      - DATASOURCE_URL=jdbc:postgresql://nss-db/postgres
+      - DATASOURCE_DRIVER=org.postgresql.Driver
+      - DATASOURCE_USER=postgres
+      - DATASOURCE_PASS=1234
+      - DATASOURCE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      
+networks:
+  net:
+    
