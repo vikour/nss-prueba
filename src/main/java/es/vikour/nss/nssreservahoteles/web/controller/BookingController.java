@@ -23,7 +23,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Reservas")
@@ -45,8 +44,8 @@ public interface BookingController extends ApiController {
 	ResponseEntity<BookingDto> openBooking(
 			@PathVariable("hotelId") Integer hotelId,
 			@Valid @RequestBody OpenBookingRequestDto request);
-	
-	
+
+
 	@Operation(
 		summary = "Consulta las reservas para un hotel en unas fechas",
 		description = "Consulta qué reservas hay realizadas para un hotel entre fechas. En el resultado aparecerán aquellas reservas en las que haya días " +
@@ -66,7 +65,7 @@ public interface BookingController extends ApiController {
 			@PathVariable("hotelId") Integer hotelId,
 			@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
 			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate);
-	
+
 	@Operation(
 		summary = "Consulta los datos de una reserva",
 		description = "Devuelve todos los datos de una reserva por ID",
@@ -78,8 +77,8 @@ public interface BookingController extends ApiController {
 		content = {@Content(mediaType = "appliaction/json", schema = @Schema(implementation = ApiError.class))})
 	@GetMapping(path = "booking/{bookingId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<BookingDto> queryBooking(@PathVariable("bookingId") Integer bookingId);
-	
-	
+
+
 	@Operation(
 		summary = "Cancela una reserva",
 		description = "Permite cancelar una reserva proporcionando el ID",
