@@ -21,9 +21,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Esta clase representa a un Hotel en el que se podrá hacer reservas y 
+ * Esta clase representa a un Hotel en el que se podrá hacer reservas y
  * definir qué disponibilidad de habitaciones tendrá.
- * 
+ *
  * @author Víctor Manuel Ortiz Guardeño
  */
 
@@ -33,33 +33,33 @@ import lombok.ToString;
 @Entity
 @Table(name = "hotels")
 public class Hotel {
-	
+
 	/**
 	 * Identificador del Hotel
 	 */
-	
+
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	/**
 	 * Nombre del hotel
 	 */
-	
+
 	@NotEmpty(message = ERROR_HOTEL_NAME)
 	@Size(max = 100, message = ERROR_HOTEL_NAME_SIZE)
 	private String name;
-	
+
 	/**
 	 * Categoría del hotel
 	 */
-	
+
 	@NotNull(message = ERROR_HOTEL_CATEGORY)
 	private Integer category;
-	
+
 	/**
 	 * Lista de disponibilidades
 	 */
-	
+
 	@OneToMany(mappedBy = "availavilityPK.hotel")
 	private List<Availavility> availavilities;
 

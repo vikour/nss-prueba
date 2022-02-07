@@ -12,7 +12,7 @@ import lombok.ToString;
 
 /**
  * Representa a un <code>Hotel</code>. Se quiere conocer su Id, nombre y categoria.
- * 
+ *
  * @author Víctor Manuel Ortiz Guardeño
  */
 
@@ -25,14 +25,14 @@ public class HotelDto {
 
 	@Schema(description = "Identificador del hotel", accessMode = AccessMode.READ_ONLY, example = "1")
 	private int id;
-	
+
 	@NotEmpty
 	@Size(max = 100)
 	@Schema(description = "Nombre del hotel", accessMode = AccessMode.READ_ONLY, example = "Hotel A")
 	private String name;
-	
+
 	@Schema(description = "Categoria del hotel", accessMode = AccessMode.READ_ONLY, example = "1")
 	private int category;
-	
-	
+
+
 }

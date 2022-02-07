@@ -19,7 +19,6 @@ public class HotelNotFoundException extends HotelBookingRuntimeException {
 
 	public HotelNotFoundException(String msg) {
 		super(msg);
-		// TODO Auto-generated constructor stub
 	}
 
 }

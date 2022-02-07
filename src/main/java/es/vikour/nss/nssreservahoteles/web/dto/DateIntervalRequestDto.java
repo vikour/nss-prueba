@@ -1,6 +1,8 @@
 package es.vikour.nss.nssreservahoteles.web.dto;
 
-import static es.vikour.nss.nssreservahoteles.web.dto.ValidationMessageErrorContants.*;
+import static es.vikour.nss.nssreservahoteles.web.dto.ValidationMessageErrorContants.MSG_FECHA_FIN_OBLIGATORIA;
+import static es.vikour.nss.nssreservahoteles.web.dto.ValidationMessageErrorContants.MSG_FECHA_INICIO_FIN_INVALIDAS;
+import static es.vikour.nss.nssreservahoteles.web.dto.ValidationMessageErrorContants.MSG_FECHA_INICIO_OBLIGATORIA;
 
 import java.time.LocalDate;
 
@@ -23,7 +25,7 @@ public class DateIntervalRequestDto {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Schema(description = "Fecha de inicio", example = "2022-02-05", pattern = "yyyy-MM-dd")
 	protected LocalDate startDate;
-	
+
 	@NotNull(message = MSG_FECHA_FIN_OBLIGATORIA)
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Schema(description = "Fecha de fin", example = "2022-02-05", pattern = "yyyy-MM-dd")
@@ -32,7 +34,7 @@ public class DateIntervalRequestDto {
 	@JsonIgnore
 	@AssertTrue(message = MSG_FECHA_INICIO_FIN_INVALIDAS)
 	public boolean isStartDateIsLessOrEqualsThanEndDate() {
-		return startDate != null && 
+		return startDate != null &&
 			   endDate != null &&
 			   startDate.compareTo(endDate) <= 0;
 	}

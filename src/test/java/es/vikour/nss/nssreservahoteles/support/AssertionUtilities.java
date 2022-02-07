@@ -6,8 +6,6 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 
-import es.vikour.nss.nssreservahoteles.entity.Hotel;
-
 /**
  * Clase de soporte que contiene funcionalidades para la comprobacion
  * en los test.

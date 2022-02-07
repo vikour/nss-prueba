@@ -1,13 +1,16 @@
 package es.vikour.nss.nssreservahoteles.web.dto;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static es.vikour.nss.nssreservahoteles.support.AssertionUtilities.assertExistsValidationMessage;
+import static es.vikour.nss.nssreservahoteles.web.dto.ValidationMessageErrorContants.MSG_FECHA_FIN_OBLIGATORIA;
+import static es.vikour.nss.nssreservahoteles.web.dto.ValidationMessageErrorContants.MSG_FECHA_INICIO_FIN_INVALIDAS;
+import static es.vikour.nss.nssreservahoteles.web.dto.ValidationMessageErrorContants.MSG_FECHA_INICIO_OBLIGATORIA;
+import static es.vikour.nss.nssreservahoteles.web.dto.ValidationMessageErrorContants.MSG_NUMERO_HABITACIONES_MINIMO;
+import static es.vikour.nss.nssreservahoteles.web.dto.ValidationMessageErrorContants.MSG_NUMERO_HABITACIONES_OBLIGATORIO;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.Set;
-
-import static es.vikour.nss.nssreservahoteles.support.AssertionUtilities.*;
-
-import static es.vikour.nss.nssreservahoteles.web.dto.ValidationMessageErrorContants.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -19,21 +22,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class OpenAvailavilityRequestDtoTest {
-	
+
 	// Parámetros válidos para las comprobaciones
 	private static final int VALID_NUMBER_ROOMS = 2;
 	private static final LocalDate VALID_END_DATE = LocalDate.of(2022, 1, 17);
 	private static final LocalDate VALID_START_DATE = LocalDate.of(2022, 1, 15);
-	private static final int VALID_HOTEL_ID = 1;
-	
+
 	public static Validator validator;
 	public OpenAvailavilityRequestDto validRequest;
-	
+
 	@BeforeAll
 	public static void setUp() {
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
-	
+
 	@BeforeEach
 	public void setUpTest() {
 		// Se configura una petición válida para después ir alterandola en cada test
@@ -42,12 +44,12 @@ class OpenAvailavilityRequestDtoTest {
 		validRequest.setEndDate(VALID_END_DATE);
 		validRequest.setNumberRooms(VALID_NUMBER_ROOMS);
 	}
-	
+
 	@Test
 	@DisplayName("Validación petición válida")
 	public void testValidRequest_thenCorrect() {
 		Set<ConstraintViolation<OpenAvailavilityRequestDto>> validations = validator.validate(validRequest);
-		
+
 		assertTrue(validations.isEmpty());
 		assertEquals(VALID_NUMBER_ROOMS, validRequest.getNumberRooms());
 		assertEquals(VALID_START_DATE, validRequest.getStartDate());
@@ -58,9 +60,9 @@ class OpenAvailavilityRequestDtoTest {
 	@DisplayName("El número de habitaciones no debería de ser nulo")
 	public void testNumberRooms_whenNull_thenError() {
 		validRequest.setNumberRooms(null);
-		
+
 		Set<ConstraintViolation<OpenAvailavilityRequestDto>> validations = validator.validate(validRequest);
-		
+
 		assertExistsValidationMessage(validations, MSG_NUMERO_HABITACIONES_OBLIGATORIO);
 	}
 
@@ -72,7 +74,7 @@ class OpenAvailavilityRequestDtoTest {
 		validRequest.setNumberRooms(0);
 		Set<ConstraintViolation<OpenAvailavilityRequestDto>> validations = validator.validate(validRequest);
 		assertExistsValidationMessage(validations, MSG_NUMERO_HABITACIONES_MINIMO);
-		
+
 		// se prueba con -2
 		validRequest.setNumberRooms(-2);
 		validations = validator.validate(validRequest);
@@ -103,7 +105,7 @@ class OpenAvailavilityRequestDtoTest {
 		validRequest.setEndDate(LocalDate.of(2022, 4, 1));
 		Set<ConstraintViolation<OpenAvailavilityRequestDto>> validations = validator.validate(validRequest);
 		assertExistsValidationMessage(validations, MSG_FECHA_INICIO_FIN_INVALIDAS);
-		
+
 		// Test 2
 		validRequest.setStartDate(LocalDate.of(2022, 5, 1));
 		validRequest.setEndDate(LocalDate.of(2021, 6, 1));
