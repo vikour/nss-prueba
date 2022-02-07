@@ -30,7 +30,7 @@ public interface BookingController extends ApiController {
 
 	@Operation(
 			summary = "Hace una reserva en un hotel",
-			description = "Intenta hacer una reserva en un Hotel para una fechas concretas")
+			description = "Intenta hacer una reserva en un Hotel para unas fechas concretas")
 
 	@ApiResponse(responseCode = "201", description = "Reserva creada satisfactoriamente")
 	@ApiResponse(responseCode = "404", description = "No se ha encontrado el hotel",

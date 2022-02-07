@@ -20,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Schema(name = "Hotel",description = "Un hotel es un lugar donde se hacen reservas y se habre disponibilidad")
+@Schema(name = "Hotel",description = "Un hotel es un lugar donde se hacen reservas y se abren disponibilidades")
 public class HotelDto {
 
 	@Schema(description = "Identificador del hotel", accessMode = AccessMode.READ_ONLY, example = "1")

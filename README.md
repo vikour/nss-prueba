@@ -8,10 +8,10 @@ Ofrece la siguientes funcionalidades:
 - Abrir disponibilidad en un hotel
 - Hacer reservas
 - Cancelar reservas
-- Ver qué reservas se han realizado pora un hotel en unas determinadas fechas
+- Ver las reservas que se han realizado para unn hotel en unas determinadas fechas
 - Ver los datos de una reserva
 
-Todas estas funcionalidades se han documentado por medio de OpenApi para poder probarlas.
+Todas estas funcionalidades se han documentado por medio de OpenApi para poder probarlas, y estarán disponibles una vez se haya iniciado la aplicación.
 
 ## Puesta en marcha
 
@@ -37,15 +37,36 @@ git clone https://github.com/vikour/nss-prueba.git && cd nss-prueba
 ```sh
 ./mvnw clean install
 ```
+> usar el siguiente comando en caso de estar en Windows
+> ```sh
+> mvnw.cmd clean install
+> ```
 ### Uso
 
 Una vez compilado e instalado el programa, iniciar el servicio con el siguiente comando:
 ```
-java -jar target/nss-reserva-hoteles-0.8.1-SNAPSHOT.jar
+java -jar target/nss-reserva-hoteles-0.8.2-SNAPSHOT.jar
 ```
 Al ejecutarlo se iniciará el servicio REST en la siguietne URL: [http://localhost:8080](http://localhost:8080). Por ejemplo, podrá listar los hoteles existentes a través de la siguiente URL: [http://localhost:8080/hotels](http://localhost:8080/hotels)
 
-La documentación del API REST la puede encontrar en la siguiente dirección : [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+La documentación del API REST la puede encontrar en la siguiente dirección : [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html). A través de la esta URL también se puede probar el programa.
+
+También se ha incluido una colección de POSTMAN en la siguiente ruta: **_src/it/Reserva Hoteles.postman_collection.json_**
+
+### Acceso a la base de datos temporal
+
+Si se quiere saber qué está escribiendo el programa en la base de datos, realice los siguientes pasos con la aplicación iniciada.
+
+1. Acceder a la consola por medio del siguiente enlace [H2 Console](http://localhost:8080/h2-console).
+
+2. Establecer la siguiente configuración:
+
+    - **Driver class**: org.h2.Driver
+    - **JDBC URL**:     jdbc:h2:mem:nss-hoteles-db
+    - **User name**:    sa
+    - **Password**:     _(contraseña vacía no introducir nada)_
+
+Una vez realizados los pasos anteriores se mostrará la consola de H2 para ejecutar consultas SQL.
 
 ## Puesta en marcha - Imagen Docker
 
@@ -70,6 +91,10 @@ git clone https://github.com/vikour/nss-prueba.git && cd nss-prueba
 ```sh
 ./mvnw clean package jib:dockerBuild
 ```
+> usar el siguiente comando en caso de estar en Windows
+> ```sh
+> mvnw.cmd clean package jib:dockerBuild
+> ```
 ### Uso
 
 Una vez compilado e instalada la imagen de docker poner el marcha a traves de _docker compose_:
